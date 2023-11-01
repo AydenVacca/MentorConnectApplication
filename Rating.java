@@ -8,13 +8,17 @@ public class Rating
         this.rating = 0;
         this.userID = null;
     }
-    public void createRating(String mentorID, double Rating){
-        
+    public Rating(int mentorID, double rating){
+        this.userID = mentorID;
+        this.rating = rating;
     }
-    public void deleteRating(String mentorID, double Rating){
+    public void updateRating(int mentorID, double rating){
 
     }
-    public void editRating(String mentorID, double Rating){
+    public void deleteRating(int mentorID, double rating){
+
+    }
+    public void editRating(int mentorID, double rating){
 
     }
     public void displayRating(){
