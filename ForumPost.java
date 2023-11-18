@@ -5,5 +5,6 @@ public class ForumPost {
     private String postTitle;
     private String content;
     private List<Comment> comments;
+    private int votes;
 
 }
