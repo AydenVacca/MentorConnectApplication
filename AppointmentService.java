@@ -13,7 +13,7 @@ public class AppointmentService {
 
     }
     //Method to create Appointment for Mentee
-    public void createAppointment(){
+    public Appointment createAppointment(){
 
     }
     //Method to edit appointment
