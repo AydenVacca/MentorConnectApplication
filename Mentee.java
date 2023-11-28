@@ -1,6 +1,4 @@
-package MentorConnect;
-
-import java.util.List;
+import java.util.*;
 
 public class Mentee extends User {
 
@@ -46,7 +44,7 @@ public class Mentee extends User {
     }
 
     //Method implementations
-    @Override public void login() {
+    @Override public boolean login() {
         
     }
     @Override public void logout() {

@@ -1,5 +1,3 @@
-package MentorConnect;
-
 public class AppointmentService {
 
     private Factory factory;

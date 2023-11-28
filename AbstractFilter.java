@@ -1,11 +1,11 @@
-public abstract class Filter {
+public abstract class AbstractFilter {
     // Attributes of the Filter class as inferred from the diagram
     protected String mentorID;
     protected String mentorName;
     protected String storageName;
 
     // Constructor
-    public Filter(String mentorID, String mentorName, String storageName) {
+    public AbstractFilter(String mentorID, String mentorName, String storageName) {
         this.mentorID = mentorID;
         this.mentorName = mentorName;
         this.storageName = storageName;
