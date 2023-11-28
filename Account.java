@@ -1,6 +1,4 @@
-package MentorConnect
-
-public abstract class Account extends User(){
+public abstract class Account{
     //Variables
     private String username;
     private String password;

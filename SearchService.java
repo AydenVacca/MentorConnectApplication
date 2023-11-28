@@ -1,5 +1,3 @@
-package MentorConnect;
-
 public class SearchService {
     private Factory factory;
 

@@ -1,4 +1,4 @@
-package MentorConnect;
+import java.util.*;
 
 public class ForumPost {
     private int postID;

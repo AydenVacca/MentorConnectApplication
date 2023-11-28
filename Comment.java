@@ -1,5 +1,3 @@
-package MentorConnect;
-
 public class Comment {
     //Variables
     private int commentID;

@@ -1,5 +1,3 @@
-package MentorConnect;
-
 import java.util.List;
 
 public abstract class User {

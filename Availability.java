@@ -1,4 +1,3 @@
-package MentorConnect;
 import java.util.*;
 
 public class Availability {
