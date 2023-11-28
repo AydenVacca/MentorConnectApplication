@@ -1,5 +1,3 @@
-package MentorConnect;
-
 public class ForumPostService {
 
     public void createComment(User user, String content){

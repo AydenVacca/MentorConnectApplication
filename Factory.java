@@ -1,10 +1,8 @@
-package MentorConnect;
-
 // Factory class to create service instances
 public class Factory {
-    private Database database;
+    private Databases database;
 
-    public Factory(Database database) {
+    public Factory(Databases database) {
         this.database = database;
     }
 

@@ -1,7 +1,7 @@
-public class FilterByAvailability extends Filter {
+public class FilterByAvail extends AbstractFilter {
     
     // Constructor matching the superclass
-    public FilterByAvailability(String mentorID, String mentorName, String storageName) {
+    public FilterByAvail(String mentorID, String mentorName, String storageName) {
         super(mentorID, mentorName, storageName);
     }
 
