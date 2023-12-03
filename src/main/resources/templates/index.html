@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>MentorConnect</p>
+    <table>
+        <thead>
+            <th style="text-align: center">Accounts</th>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item: ${Accounts}">
+                <td th:text="${item.userId}">account_id</td>
+                <td th:text="${item.username}">account_username</td>
+                <td th:text="${item.password}">account_password</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <th style="text-align: center">ForumPost</th>
+            <tr>
+                <th>Actions</th>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Content</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post: ${ForumPost}">
+                <td>
+                    <div class="btn btn-group-sm" role="group">
+                        <a class="btn btn-danger" th:href="@{/deletePost/{postID}(postID=${post.postID})}">Delete</a>
+                    </div>
+                </td>
+                <td th:text="${post.postID}">post_id</td>
+                <td th:text="${post.title}">post_title</td>
+                <td th:text="${post.content}">post_content</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
