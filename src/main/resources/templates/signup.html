@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+</head>
+<body>
+    <h1>Sign-Up Page</h1>
+
+    <form action="/login">
+
+        <label>Enter ISU Email:</label>
+        <input type="text" id="email" name="email" required><br>
+
+        <label>Enter a username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label>Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <label>Re-enter Password:</label>
+        <input type="password" id="Re-enter password" name="Re-enter password" required><br>
+
+        <a th:href="@{/login}">
+            <button>LogIn</button>
+        </a>
+
+    </form>
+
+</body>
+</html>

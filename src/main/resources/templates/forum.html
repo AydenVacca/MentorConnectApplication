@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 style="display: flex; justify-content: center; align-content: center; font-size: 30pt;">Forum Post</h1>
+    <hr>
+
+    <!-- Title -->
+    <h2 th:text="${post.title}"></h2>
+
+    <!-- Content -->
+    <p th:text="${post.content}"></p>
+
+    <!-- Comments -->
+
+    <hr>
+    <!-- Back to Home -->
+    <a th:href="@{/home}">
+        <button>Back</button>
+    </a>
+</body>
+</html>

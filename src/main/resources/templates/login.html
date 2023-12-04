@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login to MentorConnect</h1>
+    
+    <form action="/home">
+
+        <label>Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label>Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <a th:href="@{/home}">
+            <button>LogIn</button>
+        </a>
+
+    </form>
+</body>
+</html>

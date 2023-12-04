@@ -16,7 +16,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
-    private Long userId;
+    private long userId;
 
     @Getter
     @Setter

@@ -33,8 +33,8 @@ public class MentorConnectLoader implements CommandLineRunner{
         }
 
         if (forumPostDB.count() == 0){
-            ForumPost post1 = new ForumPost("rap god", "im beginning to feel like a rap god");
-            ForumPost post2 = new ForumPost("gee", "wilikers");
+            ForumPost post1 = new ForumPost("rap god", "im beginning to feel like a rap god", 1);
+            ForumPost post2 = new ForumPost("gee", "wilikers", 1);
 
             forumPostDB.save(post1);
             forumPostDB.save(post2);

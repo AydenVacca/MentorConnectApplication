@@ -9,11 +9,22 @@ import com.webapp.mentorconnect2.repository.AccountService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
 @Controller
-public class IndexController {
+public class HomeController {
+    
+    @Autowired
+    private AccountService accountDB;
 
-    @GetMapping("/")
+    @Autowired
+    private ForumPostService forumPostDB;
+
+    @GetMapping("/home")
     public ModelAndView index(){
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        //Pull all items from db and add to list object
+        modelAndView.addObject("Accounts", accountDB.findAll());
+        
+        modelAndView.addObject("ForumPost", forumPostDB.findAll());
     
         return modelAndView;
     }

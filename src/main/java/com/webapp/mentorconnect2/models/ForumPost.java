@@ -26,13 +26,18 @@ public class ForumPost {
     @Setter
     private String content;
 
+    @Getter
+    @Setter
+    private long authorID;
+
     //Default constructor for display purposes
     public ForumPost(){
 
     }
 
-    public ForumPost(String title, String content){
+    public ForumPost(String title, String content, long authorID){
         this.title = title;
         this.content = content;
+        this.authorID = authorID;
     }
 }
