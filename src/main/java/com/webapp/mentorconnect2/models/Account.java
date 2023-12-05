@@ -20,6 +20,10 @@ public class Account {
 
     @Getter
     @Setter
+    private String email;
+
+    @Getter
+    @Setter
     private String username;
 
     @Getter
