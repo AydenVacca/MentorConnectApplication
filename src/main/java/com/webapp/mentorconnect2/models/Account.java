@@ -26,6 +26,10 @@ public class Account {
     @Setter
     private String password;
 
+    @Getter
+    @Setter
+    private String confirmPassword;
+
     //Default constructor for display purposes
     public Account(){
 
