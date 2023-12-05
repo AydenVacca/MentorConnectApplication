@@ -25,8 +25,8 @@ public class MentorConnectLoader implements CommandLineRunner{
     
     private void localSeedData(){
         if (accountDB.count() == 0){
-            Account account1 = new Account("av", "password");
-            Account account2 = new Account("mm", "204324");
+            Account account1 = new Account("avssssssss", "password");
+            Account account2 = new Account("mfdskjldskjm", "204324");
 
             accountDB.save(account1);
             accountDB.save(account2);
@@ -34,7 +34,7 @@ public class MentorConnectLoader implements CommandLineRunner{
 
         if (forumPostDB.count() == 0){
             ForumPost post1 = new ForumPost("rap god", "im beginning to feel like a rap god", 1);
-            ForumPost post2 = new ForumPost("gee", "wilikers", 1);
+            ForumPost post2 = new ForumPost("gee", "wilikers", 2);
 
             forumPostDB.save(post1);
             forumPostDB.save(post2);

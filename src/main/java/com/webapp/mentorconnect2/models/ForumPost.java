@@ -16,7 +16,7 @@ public class ForumPost {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     @Setter
-    private Long postID;
+    private long postID;
 
     @Getter
     @Setter

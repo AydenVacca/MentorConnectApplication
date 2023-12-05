@@ -28,7 +28,7 @@ public class ForumPostFormController {
         ForumPost post = forumPostDB.findById(id).orElseThrow(()-> new IllegalArgumentException("Post " + id + " not found."));
 
         forumPostDB.delete(post);
-        return "redirect:/";
+        return "redirect:/home";
     }
 
     //Loads post creation page
@@ -55,4 +55,16 @@ public class ForumPostFormController {
         post.ifPresent(value -> model.addAttribute("post", value));
         return "forum";
     }
+
+    //Edit posts
+    @GetMapping("/editPost/{postID}")
+    public String editForumPost(@PathVariable("postID") long id, Model model){
+        Optional<ForumPost> post = forumPostDB.findById(id);
+
+        model.addAttribute("post", post);
+        return "editPost";
+    }
+   
+
 }
+
