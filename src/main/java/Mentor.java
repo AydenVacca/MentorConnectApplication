@@ -1,5 +1,3 @@
-package MentorConnect;
-
 import java.util.List;
 
 public class Mentor extends User {
@@ -57,7 +55,7 @@ public class Mentor extends User {
     }
 
     //Method implementations
-    @Override public void login() {
+    @Override public boolean login() {
 
     }
     @Override public void logout() {
