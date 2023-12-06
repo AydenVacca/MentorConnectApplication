@@ -15,6 +15,38 @@
     <p th:text="${post.content}"></p>
 
     <!-- Comments -->
+    <hr>
+
+    <!-- Add Comment -->
+    <a th:href="@{/createComment/{postID}(postID=${post.postID})}">
+        <button>Add Comment</button>
+    </a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th> </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="comment: ${Comments}">
+                <td th:text="${comment.authorID}">post_id</td>
+                <td th:text="${comment.content}">content</td>
+                <td>
+                    <div th:if="${comment.authorID == 0}">
+                        <a th:href="@{/editComment/{commentID}(commentID=${comment.commentID})}">
+                            <button style="background-color: lightgreen">Edit</button>
+                        </a>
+                        <a th:href="@{/deleteComment/{commentID}(commentID=${comment.commentID})}">
+                            <button style="background-color: lightcoral">Delete</button>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <hr>
     <!-- Back to Home -->

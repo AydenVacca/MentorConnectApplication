@@ -2,17 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Title</title>
 </head>
 <body>
-    <h1 style="font-weight: bold; font-size: 25pt;">MentorConnect</h1>
+    <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 25pt;">MentorConnect</h1>
 
-    <a th:href="@{/login}">
-        <button>LogIn</button>
-    </a>
-    <br>
-    <a th:href="@{/signup}">
-        <button>SignUp</button>
-    </a>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div>
+            <a th:href="@{/login}">
+                <button style="font-size: 20px; padding: 10px;">Login</button>
+            </a>
+        </div>
+        <div style="margin-left: 20px;">
+            <a th:href="@{/signup}">
+                <button style="font-size: 20px; padding: 10px;">Signup</button>
+            </a>
+        </div>
+    </div>
+
 </body>
 </html>
