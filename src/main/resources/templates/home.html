@@ -14,22 +14,20 @@
     </div>
     
 
-    <div th:if="${role}">
-        <p th:text="'Role: ' + ${role}"></p>
-    </div>
-
     <hr>
-    <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Availability</h1>
     
-    <div th:if="${role == 'mentor'}">
+    <div th:if="${role == 'Mentor'}">
         <!-- Content for mentors -->
+        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Availability</h1>
         <p>This is content for mentors.</p>
     </div>
     
-    <div th:if="${role == 'mentee'}">
+    <div th:if="${role == 'Mentee'}">
         <!-- Content for mentees -->
+        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Mentor List</h1>
         <p>This is content for mentees.</p>
     </div>
+    
     <hr>
     <!-- Forum Postings -->
     <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
