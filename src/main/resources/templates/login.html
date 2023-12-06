@@ -15,11 +15,26 @@
         <label>Password:</label>
         <input type="password" id="password" name="password" required><br>
 
+        <label>Role:</label>
+        <input type="radio" name="role" value="mentor" checked> Mentor
+        <input type="radio" name="role" value="mentee"> Mentee<br>
+
         <button type="submit">Log In</button>
     </form>
 
     <a th:href="@{/signup}">
         <button>Sign Up</button>
     </a>
+
+    <div id="selectedRole" class="selected-role"></div>
+
+    <script>
+        function validateForm() {
+            var role = document.querySelector('input[name="role"]:checked').value;
+            var selectedRoleDiv = document.getElementById('selectedRole');
+            selectedRoleDiv.innerHTML = "Selected Role: " + role;
+            return true;
+        }
+    </script>
 </body>
 </html>

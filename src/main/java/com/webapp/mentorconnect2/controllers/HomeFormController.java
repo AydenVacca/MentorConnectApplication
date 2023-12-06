@@ -30,7 +30,11 @@ public class HomeFormController {
         modelAndView.addObject("ForumPost", forumPostDB.findAll());
 
         modelAndView.addObject("homeFormController", this);
+
+        modelAndView.addObject("role", "mentor");
         return modelAndView;
+
+        
     }
 
     public String getAuthorUsername(long authorID){
