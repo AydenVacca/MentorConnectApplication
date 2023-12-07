@@ -3,6 +3,8 @@ package com.webapp.mentorconnect2.controllers;
 import com.webapp.mentorconnect2.models.MentorAvailability;
 import com.webapp.mentorconnect2.repository.MentorAvailabilityService;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +26,14 @@ public class MentorAvailabilityController {
 
     @GetMapping("/mentorList")
     public String getMentorList(Model model) {
-        List<MentorAvailability> mentors = mentorAvailabilityRepository.findAll();
-        model.addAttribute("mentors", mentors);
+        // Retrieve mentor's availability (replace "MentorName" with the actual field name)
+        List<MentorAvailability> mentorAvailability = mentorAvailabilityRepository.findAll();
+
+        // Add mentor's availability to the model
+        model.addAttribute("mentorAvailability", mentorAvailability);
+
+        // Add other necessary data to the model as needed
+
         return "menteePage";
     }
 
@@ -35,17 +43,23 @@ public class MentorAvailabilityController {
     }
 
     @PostMapping("/addAvailability")
-    public String addAvailability(@RequestParam("day") String day,
-                              @RequestParam("time") String time) {
+    public String addAvailability(HttpSession session,
+                                  @RequestParam("day") String day,
+                                  @RequestParam("time") String time) {
+        // Retrieve the username from the session
+        String mentorName = (String) session.getAttribute("username");
 
-    // For simplicity, assuming your MentorAvailability entity has an ID field
-    MentorAvailability mentorAvailability = new MentorAvailability();
-    mentorAvailability.setAvailability(day + " " + time);
+        if (mentorName == null) {
+            // Handle the missing 'mentorName' parameter, you might redirect to an error page or handle it based on your requirements
+            return "redirect:/error";
+        }
 
-    // Save the mentorAvailability entity
-    mentorAvailabilityRepository.save(mentorAvailability);
+        MentorAvailability mentorAvailability = new MentorAvailability();
+        mentorAvailability.setMentorName(mentorName);
+        mentorAvailability.setAvailability(day + " " + time);
 
-    return "redirect:/home";
-}
+        mentorAvailabilityRepository.save(mentorAvailability);
 
+        return "redirect:/mentorList";  // Assuming you want to redirect to the mentor list page after adding availability
+    }
 }

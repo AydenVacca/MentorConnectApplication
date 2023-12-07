@@ -37,8 +37,15 @@
             <br>
             <button type="submit">Add Availability</button>
         </form>
+    
+        <h2>Mentor Availability</h2>
+        <ul th:each="availability: ${mentorAvailability}">
+            <li th:text="${availability.mentorName + ' - ' + availability.availability}"></li>
+        </ul>
+    
         <p>This is content for mentors.</p>
     </div>
+    
     
     
     

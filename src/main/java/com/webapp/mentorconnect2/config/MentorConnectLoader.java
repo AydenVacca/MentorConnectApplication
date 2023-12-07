@@ -25,8 +25,8 @@ public class MentorConnectLoader implements CommandLineRunner{
     
     private void localSeedData(){
         if (accountDB.count() == 0){
-            Account account1 = new Account("avssssssss", "password");
-            Account account2 = new Account("mfdskjldskjm", "204324");
+            Account account1 = new Account("avssssssss", "password", "Mentor");
+            Account account2 = new Account("mfdskjldskjm", "204324", "Mentee");
 
             accountDB.save(account1);
             accountDB.save(account2);
