@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.repository.AccountService;
@@ -20,6 +21,16 @@ public class HomeFormController {
 
     @Autowired
     private ForumPostService forumPostDB;
+
+    @Autowired
+    public void setAccountService(AccountService accountDB){
+        this.accountDB = accountDB;
+    }
+
+    @Autowired
+    public void setForumPostService(ForumPostService forumPostDB){
+        this.forumPostDB = forumPostDB;
+    }
 
     @GetMapping("/home")
     public ModelAndView homePage(@RequestParam(name = "role", required = false) String userRole) {
