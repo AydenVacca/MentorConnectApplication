@@ -9,6 +9,25 @@
 
     <!-- Account Stuff -->
 
+    <div th:if="${role}">
+        <p th:text="'Welcome, ' + ${role} + '! Here are ' + ${role + '-specific features.'}"></p>
+    </div>
+
+
+    <hr>
+
+    <div th:if="${role == 'Mentor'}">
+        <!-- Content for mentors -->
+        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Availability</h1>
+        <p>This is content for mentors.</p>
+    </div>
+
+    <div th:if="${role == 'Mentee'}">
+        <!-- Content for mentees -->
+        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Mentor List</h1>
+        <p>This is content for mentees.</p>
+    </div>
+
     <hr>
 
     <!-- Forum Postings -->

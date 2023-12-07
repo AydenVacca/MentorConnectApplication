@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -15,9 +15,30 @@
         <label>Password:</label>
         <input type="password" id="password" name="password" required><br>
 
-        <a th:href="@{/home}">
-            <button>LogIn</button>
-        </a>
+        <label>Role:</label>
+        <input type="radio" name="role" value="Mentor" checked> Mentor
+        <input type="radio" name="role" value="Mentee"> Mentee<br>
+
+        <button type="submit">Log In</button>
+        
+    </form>
+
+    <a th:href="@{/signup}">
+        <button>Sign Up</button>
+    </a>
+
+    <div id="selectedRole" class="selected-role"></div>
+
+    <script>
+
+        function validateForm() {
+            var role = document.querySelector('input[name="role"]:checked').value;
+            var selectedRoleDiv = document.getElementById('selectedRole');
+            selectedRoleDiv.innerHTML = "Selected Role: " + role;
+            return true;
+        }
+
+    </script>
 
     </form>
 </body>
