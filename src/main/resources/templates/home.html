@@ -17,16 +17,41 @@
     <hr>
     
     <div th:if="${role == 'Mentor'}">
-        <!-- Content for mentors -->
         <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Availability</h1>
+        <form th:action="@{/addAvailability}" method="post">
+            <label for="day">Choose a day:</label>
+            <select id="day" name="day" required>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <!-- Add more options for other days -->
+            </select>
+            <br>
+            <label for="time">Choose a time:</label>
+            <select id="time" name="time" required>
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+                <option value="Evening">Evening</option>
+                <!-- Add more options for other times -->
+            </select>
+            <br>
+            <button type="submit">Add Availability</button>
+        </form>
         <p>This is content for mentors.</p>
     </div>
     
+    
+    
     <div th:if="${role == 'Mentee'}">
-        <!-- Content for mentees -->
         <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Mentor List</h1>
         <p>This is content for mentees.</p>
+    
+        <h2>Mentor Availability</h2>
+        <ul th:each="mentor: ${mentors}">
+            <li th:text="${mentor.name + ' - ' + mentor.availability}"></li>
+        </ul>
     </div>
+    
     
     <hr>
     <!-- Forum Postings -->

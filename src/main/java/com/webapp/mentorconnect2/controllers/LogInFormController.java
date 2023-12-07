@@ -10,6 +10,7 @@ public class LogInFormController {
 
     @GetMapping("/login")
     public String loginPage() {
+        
         return "login";
     }
 
