@@ -5,12 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-//import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table (name = "Account")
+@Table(name = "Account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,13 +33,18 @@ public class Account {
     @Setter
     private String confirmPassword;
 
-    //Default constructor for display purposes
-    public Account(){
+    @Getter
+    @Setter
+    private String role;  // New field for storing the user's role
+
+    // Default constructor for display purposes
+    public Account() {
 
     }
 
-    public Account(String username, String password){
+    public Account(String username, String password, String role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 }

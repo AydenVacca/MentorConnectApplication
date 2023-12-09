@@ -23,8 +23,8 @@ public class SignUpFormController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute("user") Account user) {
-        // Additional validation and password hashing can be done here
+    public String signup(@ModelAttribute("user") Account user, @ModelAttribute("role") String role) {
+        user.setRole(role);
         accountService.save(user);
         return "redirect:/login";
     }
