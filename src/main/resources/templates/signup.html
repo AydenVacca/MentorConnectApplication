@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    <script>
+        function validateEmail(email) {
+            // Regular expression for a simple email validation
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validateForm() {
+            var email = document.getElementById('email').value;
+
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
 </head>
 <body>
     <h1>Create a MentorConnect Account</h1>
     
     <form action="/signup" method="post" th:object="${user}">
+        <!-- Your form fields and buttons -->
 
         <label>Email:</label>
         <input type="text" id="email" name="email" th:field="*{email}" required><br>
