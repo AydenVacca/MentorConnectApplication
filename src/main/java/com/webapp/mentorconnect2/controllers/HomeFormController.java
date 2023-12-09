@@ -1,17 +1,21 @@
 package com.webapp.mentorconnect2.controllers;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import jakarta.servlet.http.HttpSession;
 
 import com.webapp.mentorconnect2.models.Account;
+import com.webapp.mentorconnect2.models.MentorAvailability;
 import com.webapp.mentorconnect2.repository.AccountService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
+import com.webapp.mentorconnect2.repository.MentorAvailabilityService;
+
+import java.util.List;
 
 @Controller
 public class HomeFormController {
@@ -23,6 +27,43 @@ public class HomeFormController {
     private ForumPostService forumPostDB;
 
     @Autowired
+    private MentorAvailabilityService mentorAvailabilityService;
+
+    @GetMapping("/home")
+    public ModelAndView homePage(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("home");
+
+        // Pull all items from db and add to the list object
+        modelAndView.addObject("Accounts", accountDB.findAll());
+        modelAndView.addObject("ForumPost", forumPostDB.findAll());
+        modelAndView.addObject("homeFormController", this);
+
+        // Retrieve the role from the session
+        String userRole = (String) session.getAttribute("role");
+
+        // Default role if not found in session (replace with your actual default)
+        userRole = (userRole != null) ? userRole : "defaultRole";
+
+        modelAndView.addObject("role", userRole);
+
+        // Fetch and add mentor availability to the model
+        if ("Mentee".equals(userRole)) {
+            List<MentorAvailability> mentorAvailability = mentorAvailabilityService.findAll();
+    
+            // Log the mentor availability for debugging
+            mentorAvailability.forEach(availability -> {
+                System.out.println("Mentor Name: " + availability.getMentorName() + ", Availability: " + availability.getAvailability());
+            });
+    
+            modelAndView.addObject("mentorAvailability", mentorAvailability);
+        }
+
+        return modelAndView;
+    }
+
+    // Other methods...
+
+    @Autowired
     public void setAccountService(AccountService accountDB){
         this.accountDB = accountDB;
     }
@@ -32,25 +73,26 @@ public class HomeFormController {
         this.forumPostDB = forumPostDB;
     }
 
-    @GetMapping("/home")
-    public ModelAndView homePage(@RequestParam(name = "role", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView("home");
+    @GetMapping("/appointmentCreation")
+    public String appointmentCreationPage() {
+        return "appointmentCreation";
+    }
 
-        // Pull all items from db and add to the list object
-        modelAndView.addObject("Accounts", accountDB.findAll());
-        modelAndView.addObject("ForumPost", forumPostDB.findAll());
-        modelAndView.addObject("homeFormController", this);
+    @GetMapping("/fetchRole")
+    @ResponseBody
+    public String fetchRole(HttpSession session) {
+        // Retrieve the role from the session
+        String userRole = (String) session.getAttribute("role");
 
-        // Default role if not found in request parameters (replace with your actual default)
+        // Default role if not found in session (replace with your actual default)
         userRole = (userRole != null) ? userRole : "defaultRole";
 
-        modelAndView.addObject("role", userRole);
-
-        return modelAndView;
+        return userRole;
     }
 
     public String getAuthorUsername(long authorID) {
-        Optional<Account> author = accountDB.findById(authorID);
-        return author.get().getUsername();
+        return accountDB.findById(authorID)
+                .map(Account::getUsername)
+                .orElse("Unknown");
     }
 }
