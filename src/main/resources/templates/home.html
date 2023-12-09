@@ -3,16 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- Add jQuery library (you can download it or use a CDN) -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Use Thymeleaf to render the initial role
+            var initialRole = $("#initialRole").text();
+            $("#role").text("Welcome, " + initialRole + "! Here are " + initialRole + "-specific features.");
+
+            // Use jQuery to make an asynchronous request to fetch the role
+            $.get("/fetchRole", function (data) {
+                // Update the role in the page
+                $("#role").text("Welcome, " + data + "! Here are " + data + "-specific features.");
+            });
+        });
+    </script>
 </head>
 <body>
     <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Home</h1>
 
     <!-- Account Stuff -->
 
-    <div th:if="${role}">
-        <p th:text="'Welcome, ' + ${role} + '! Here are ' + ${role + '-specific features.'}"></p>
+    <div id="initialRole" th:text="${role}">
+        <!-- The initial role will be rendered by Thymeleaf -->
     </div>
+
+    <div id="role">
+        <!-- The role will be updated by JavaScript -->
+    </div>
+
+    <hr>
     
+    <!-- Rest of your HTML content -->
 
     <hr>
     
@@ -54,10 +76,22 @@
         <p>This is content for mentees.</p>
     
         <h2>Mentor Availability</h2>
-        <ul th:each="mentor: ${mentors}">
-            <li th:text="${mentor.name + ' - ' + mentor.availability}"></li>
+        <ul>
+            <li th:each="mentorAvailability: ${mentorAvailability}">
+                <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
+                <form th:action="@{/requestMentor}" method="post">
+                    <input type="hidden" name="mentorName" th:value="${mentorAvailability.mentorName}">
+                </form>
+                
+                <!-- Add a button to navigate to appointmentCreation.html -->
+                <a th:href="@{/appointmentCreation}">
+                    <button>Create Appointment</button>
+                </a>
+            </li>
         </ul>
     </div>
+    
+    
     
     
     <hr>

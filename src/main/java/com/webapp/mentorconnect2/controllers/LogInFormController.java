@@ -30,11 +30,12 @@ public class LogInFormController {
 
         // Check if the user exists and the password is correct
         if (user != null && user.getPassword().equals(password)) {
-            // Store the username in the session
+            // Store the username and role in the session
             session.setAttribute("username", user.getUsername());
+            session.setAttribute("role", user.getRole());
 
-            // Redirect to home with role as a query parameter
-            return "redirect:/home?role=" + user.getRole();
+            // Redirect to home
+            return "redirect:/home";
         } else {
             // Add an error message to the model and return to the login page
             model.addAttribute("error", "Invalid username or password");
@@ -42,4 +43,3 @@ public class LogInFormController {
         }
     }
 }
-

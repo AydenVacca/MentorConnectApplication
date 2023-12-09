@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.repository.AccountService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class SignUpFormController {
 
@@ -23,9 +25,13 @@ public class SignUpFormController {
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute("user") Account user, @ModelAttribute("role") String role) {
-        user.setRole(role);
+    public String signup(@ModelAttribute("user") Account user, HttpSession session) {
         accountService.save(user);
+
+        // Store the username and role in the session
+        session.setAttribute("username", user.getUsername());
+        session.setAttribute("role", user.getRole());
+
         return "redirect:/login";
     }
 }
