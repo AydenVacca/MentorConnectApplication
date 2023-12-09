@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Forum Post</title>
+</head>
+<body>
+<h1>MentorConnect</h1>
+<form
+action="#"
+th:action="@{/editPost/{postID}(postID=${post.get().postID})}"
+th:object="${post}"
+method="POST"
+>
+
+    <label>Title:</label>
+    <input type="text" id="title" name="title" th:field="*{title}" placeholder="Edit title" required>
+    <br>
+    <br>
+
+    <label>Content:</label>
+    <input type="text" id="content" name="content" th:field="*{content}" placeholder="Edit content" required>
+    <br>
+    <br>
+
+    <hr>
+
+    <button type="submit">Confirm</button>
+
+</form>
+<br>
+
+<!-- Back -->
+<a th:href="@{/home}">
+    <button>Back</button>
+</a>
+
+</body>
+</html>
