@@ -91,7 +91,9 @@
                 <form th:action="@{/requestMentor}" method="post">
                     <input type="hidden" name="mentorName" th:value="${mentorAvailability.mentorName}">
                 </form>
-                
+                <a th:href="@{/rateMentor(mentorName=${mentorAvailability.mentorName})}">
+                    <button type="button">Rate</button>
+                </a>
                 <!-- Add a button to navigate to appointmentCreation.html -->
                 <a th:href="@{/appointmentCreation}">
                     <button>Create Appointment</button>
