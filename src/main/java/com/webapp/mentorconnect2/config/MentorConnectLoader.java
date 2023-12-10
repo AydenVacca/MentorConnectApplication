@@ -5,8 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.webapp.mentorconnect2.models.Account;
+import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
 import com.webapp.mentorconnect2.repository.AccountService;
+import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
 @Component
@@ -17,6 +19,9 @@ public class MentorConnectLoader implements CommandLineRunner{
 
     @Autowired
     ForumPostService forumPostDB;
+
+    @Autowired 
+    CommentService commentDB;
 
     @Override
     public void run(String... args) throws Exception {
@@ -38,6 +43,11 @@ public class MentorConnectLoader implements CommandLineRunner{
 
             forumPostDB.save(post1);
             forumPostDB.save(post2);
+        }
+
+        if (commentDB.count() == 0){
+            Comment cm = new Comment("whats up dudes", 1, 1, 8);
+            commentDB.save(cm);
         }
     }
 }

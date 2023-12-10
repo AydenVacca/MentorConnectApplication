@@ -40,6 +40,7 @@ public class SignUpFormController {
         // Store the username and role in the session
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", user.getRole());
+        session.setAttribute("userId", user.getUserId());
 
         return "redirect:/login";
     }

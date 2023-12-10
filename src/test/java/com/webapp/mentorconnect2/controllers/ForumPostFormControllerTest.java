@@ -15,7 +15,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
+import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
 public class ForumPostFormControllerTest {
@@ -26,6 +28,9 @@ public class ForumPostFormControllerTest {
     private ForumPostService forumPostDB;
 
     @Mock
+    private CommentService commentDB;
+
+    @Mock
     private Model model;
 
     @BeforeEach
@@ -33,6 +38,7 @@ public class ForumPostFormControllerTest {
         MockitoAnnotations.openMocks(this);
         forumPostFormController = new ForumPostFormController();
         forumPostFormController.setForumRepository(forumPostDB);
+        forumPostFormController.setCommentRepository(commentDB);
     }
 
     @Test
@@ -63,5 +69,35 @@ public class ForumPostFormControllerTest {
 
         String result = forumPostFormController.deleteForumPost(postID, model);
         assertEquals("redirect:/home", result);
+    }
+
+    @Test
+    void testShowCreateComment(){
+        String expectedViewName = "createComment";
+        String returnedViewName = forumPostFormController.createComment(1, model);
+        assertEquals(expectedViewName, returnedViewName);
+    }
+
+    @Test
+    void testShowEditComment(){
+        long id = 2;
+        Comment comment = new Comment("hi", 2, 2, 2);
+        when(commentDB.findById(id)).thenReturn(Optional.of(comment));
+
+        String expectedViewName = "editComment";
+        String returnedViewName = forumPostFormController.editComment(id, model);
+        assertEquals(expectedViewName, returnedViewName);
+    }
+
+    @Test
+    void testShowDeleteComment(){
+        long commentID = 1;
+        Comment comment = new Comment();
+        comment.setCommentID(commentID);
+
+        when(commentDB.findById(commentID)).thenReturn(Optional.of(comment));
+
+        String result = forumPostFormController.deleteComment(commentID, model);
+        assertEquals("redirect:/post/0", result); //redirects to /post/0 because comment has no associated post, default 0.
     }
 }

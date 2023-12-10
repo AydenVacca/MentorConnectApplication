@@ -58,6 +58,10 @@ public class HomeFormController {
             modelAndView.addObject("mentorAvailability", mentorAvailability);
         }
 
+
+        long userID = (long) session.getAttribute("userId");
+        modelAndView.addObject("userID", userID);
+
         return modelAndView;
     }
 

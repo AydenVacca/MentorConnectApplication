@@ -33,6 +33,7 @@ public class LogInFormController {
             // Store the username and role in the session
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
+            session.setAttribute("userId", user.getUserId());
 
             // Redirect to home
             return "redirect:/home";
