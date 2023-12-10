@@ -61,7 +61,6 @@ public class HomeFormController {
         return modelAndView;
     }
 
-    // Other methods...
 
     @Autowired
     public void setAccountService(AccountService accountDB){
