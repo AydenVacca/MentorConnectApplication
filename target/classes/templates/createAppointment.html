@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <Title>Create Appointment</Title>
+    
+    <style>
+        h1{
+            color: red;
+            text-align: center;
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>MentorConnect</h1>
+    <a th:href="@{/home}">
+        <button style="color: white; background-color: red;">Home</button>
+    </a>
+    <a th:href="@{/createPost}">
+        <button style="color: white; background-color: red;">Create a Post</button>
+    </a>
+    <a th:href="@{/forum}">
+        <button style="color: white; background-color: red;">Forum</button>
+    </a>
+    <hr />
+    <h2>Appointment Creation Form</h2>
+    <form action="/create-appointment" method="appointment"></form>
+        <label>Mentor UserName:</label>
+        <input type="mentorID" id="mentorID" name="mentorID" required>
+        <br>
+        <br>
+
+        <label>Date: </label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <br>
+        <label>Time: </label>
+        <input type="time" id="time" name="time" required>
+        
+    </form>
+
+
+</body>
+
+
+
+
+
+
+</html>

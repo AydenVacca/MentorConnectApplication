@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Comment</title>
+</head>
+<body>
+<h1>MentorConnect</h1>
+<form th:action="@{/create-comment/{postID}(postID=${postID})}" method="post" th:object="${comment}">
+
+    <label>Comment:</label>
+    <input type="text" th:field="*{content}" required>
+    <input type="hidden" name="postID" th:value="${postID}"/>
+    <br>
+    <br>
+    <hr>
+
+    <button type="submit">Create Comment</button>
+
+</form>
+<br>
+
+<!-- Back -->
+<a th:href="@{/home}">
+    <button>Back</button>
+</a>
+
+</body>
+</html>
