@@ -34,4 +34,3 @@ public class MentorAvailability {
         this.availability = availability;
     }
 }
-
