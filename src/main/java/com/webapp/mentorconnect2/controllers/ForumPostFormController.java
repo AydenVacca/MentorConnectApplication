@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
-import com.webapp.mentorconnect2.repository.AccountService;
 import com.webapp.mentorconnect2.repository.AccountManagementService;
 import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
@@ -71,10 +70,15 @@ public class ForumPostFormController {
     }
 
     @PostMapping("/editPost/{postID}")
-    public String editForumPost(@PathVariable("postID") long id, @ModelAttribute ForumPost updatedPost){
+    public String editForumPost(@PathVariable("postID") long id, @ModelAttribute ForumPost updatedPost, HttpSession session){
         ForumPost post = forumPostDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Post " + id + " not found."));
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
+        post.setAuthorID(updatedPost.getAuthorID());
+
+        long authorID = (long) session.getAttribute("userId");
+        post.setAuthorID(authorID);
+
         forumPostDB.save(post);
         return "redirect:/home";
     }
@@ -117,11 +121,7 @@ public class ForumPostFormController {
             model.addAttribute("Comments", comments);
             model.addAttribute("post", post);
         }
-        
-        long userID = (long) session.getAttribute("userId");
-        model.addAttribute("userID", userID);
-
-        return "forum";
+            return "forum";
     }
 
     //Delete comments
@@ -178,28 +178,10 @@ public class ForumPostFormController {
         return "redirect:/post/" + postID;
     }
 
-     @GetMapping("/addFavorite/{postId}")
-    public String addFavorite(@PathVariable Long postId, HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        accountManagementService.addFavoritePost(username, postId);
-
-        return "redirect:/home";
-    }
-
-    @GetMapping("/favorites")
-    public String viewFavorites(Model model, HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        model.addAttribute("favoritePosts", accountManagementService.getFavoritePosts(username));
-
-        return "favorites";
-    }
-
-    @GetMapping("/removeFavorite/{postId}")
-    public String removeFavorite(@PathVariable Long postId, HttpSession session) {
-        String username = (String) session.getAttribute("username");
-        accountManagementService.removeFavoritePost(username, postId);
-
-        return "redirect:/favorites";
+    public String getAuthorUsername(long authorID) {
+        return accountDB.findById(authorID)
+                .map(Account::getUsername)
+                .orElse("Unknown");
     }
 
     public String getAuthorUsername(long authorID) {
