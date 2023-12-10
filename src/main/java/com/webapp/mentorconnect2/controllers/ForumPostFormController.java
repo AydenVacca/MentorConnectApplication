@@ -14,7 +14,7 @@ import org.springframework.ui.Model;
 import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
-import com.webapp.mentorconnect2.repository.AccountManagementService;
+import com.webapp.mentorconnect2.repository.AccountService;
 import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
@@ -35,9 +35,6 @@ public class ForumPostFormController {
     }
 
     @Autowired
-    private AccountManagementService accountManagementService;
-
-    @Autowired
     public void setForumRepository(ForumPostService forumPostDB){
         this.forumPostDB = forumPostDB;
     }
@@ -54,8 +51,7 @@ public class ForumPostFormController {
     @GetMapping("/deletePost/{postID}")
     public String deleteForumPost(@PathVariable("postID") long id, Model model){
         ForumPost post = forumPostDB.findById(id).orElseThrow(()-> new IllegalArgumentException("Post " + id + " not found."));
-        Account account = accountDB.findById(post.getAuthorID()).orElseThrow(()-> new IllegalArgumentException("Account not found."));
-        account.deleteFavoritePost(post);
+        
         forumPostDB.delete(post);
         return "redirect:/home";
     }
@@ -121,7 +117,11 @@ public class ForumPostFormController {
             model.addAttribute("Comments", comments);
             model.addAttribute("post", post);
         }
-            return "forum";
+
+        long userID = (long) session.getAttribute("userId");
+        model.addAttribute("userID", userID);
+
+        return "forum";
     }
 
     //Delete comments
@@ -176,12 +176,6 @@ public class ForumPostFormController {
         comment.setAuthorID(authorID);
         commentDB.save(comment);
         return "redirect:/post/" + postID;
-    }
-
-    public String getAuthorUsername(long authorID) {
-        return accountDB.findById(authorID)
-                .map(Account::getUsername)
-                .orElse("Unknown");
     }
 
     public String getAuthorUsername(long authorID) {
