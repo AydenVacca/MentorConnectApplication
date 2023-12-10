@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head contents (title, meta tags, etc.) -->
+    <title>Mentor Ratings</title>
+</head>
+<body>
+    <h1>Mentor Ratings</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mentor</th>
+                <th>Avg Rating</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="rating : ${ratings}">
+                <td th:text="${rating['mentorName']}"></td>
+                <td th:text="${rating['averageRating']}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/home}">
+        <button>Back</button>
+    </a>
+    <!-- Other page contents -->
+</body>
+</html>
