@@ -77,9 +77,6 @@
         <p>This is content for mentors.</p>
     </div>
     
-    
-    
-    
     <div th:if="${role == 'Mentee'}">
         <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Mentor List</h1>
         <p>This is content for mentees.</p>
@@ -131,7 +128,7 @@
                 <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
                 <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
                 <td>
-                    <div>
+                    <div th:if="${post.authorID == userID}">
                         <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
                             <button style="background-color: lightgreen">Edit</button>
                         </a>
@@ -139,10 +136,11 @@
                             <button style="background-color: lightcoral">Delete</button>
                         </a>
                         <!-- Add to Favorites Button -->
-                        <a th:href="@{/addFavorite/{postId}(postId=${post.postID})}">
-                            <button>Add to Favorites</button>
-                        </a>
+                        
                     </div>
+                    <a th:href="@{/addFavorite/{postId}(postId=${post.postID})}">
+                            <button>Add to Favorites</button>
+                    </a>
                 </td>
             </tr>
         </tbody>
