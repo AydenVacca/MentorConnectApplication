@@ -1461,3 +1461,27 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/vacca/O
 	at org.h2.mvstore.FileStore.open(FileStore.java:128)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:452)
 	... 134 more
+2023-12-09 16:57:32 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RATING" already exists; SQL statement:
+CREATE TABLE Rating (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    menteeName VARCHAR(255),
+    mentorName VARCHAR(255),
+    rating INT
+) [42101-214]
+2023-12-09 16:58:52 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RATING" already exists; SQL statement:
+CREATE TABLE Rating (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    menteeName VARCHAR(255),
+    mentorName VARCHAR(255),
+    rating INT
+) [42101-214]
+2023-12-09 16:58:53 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RATING" already exists; SQL statement:
+CREATE TABLE Rating (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    menteeName VARCHAR(255),
+    mentorName VARCHAR(255),
+    rating INT
+) [42101-214]
