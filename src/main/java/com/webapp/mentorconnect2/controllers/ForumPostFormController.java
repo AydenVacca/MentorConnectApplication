@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
-import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
-import com.webapp.mentorconnect2.repository.AccountService;
+import com.webapp.mentorconnect2.repository.AccountManagementService;
 import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
@@ -27,12 +26,7 @@ public class ForumPostFormController {
     private ForumPostService forumPostDB;
 
     @Autowired
-    private AccountService accountDB;
-
-    @Autowired
-    public void setAccountRepository(AccountService accountDB){
-        this.accountDB = accountDB;
-    }
+    private AccountManagementService accountManagementService;
 
     @Autowired
     public void setForumRepository(ForumPostService forumPostDB){
@@ -41,8 +35,6 @@ public class ForumPostFormController {
 
     @Autowired
     private CommentService commentDB;
-
-    @Autowired
     public void setCommentRepository(CommentService commentDB){
         this.commentDB = commentDB;
     }
@@ -66,15 +58,10 @@ public class ForumPostFormController {
     }
 
     @PostMapping("/editPost/{postID}")
-    public String editForumPost(@PathVariable("postID") long id, @ModelAttribute ForumPost updatedPost, HttpSession session){
+    public String editForumPost(@PathVariable("postID") long id, @ModelAttribute ForumPost updatedPost){
         ForumPost post = forumPostDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Post " + id + " not found."));
         post.setTitle(updatedPost.getTitle());
         post.setContent(updatedPost.getContent());
-        post.setAuthorID(updatedPost.getAuthorID());
-
-        long authorID = (long) session.getAttribute("userId");
-        post.setAuthorID(authorID);
-
         forumPostDB.save(post);
         return "redirect:/home";
     }
@@ -92,22 +79,19 @@ public class ForumPostFormController {
     }
 
     @PostMapping("/create-post")
-    public String createPost(ForumPost forumPost, HttpSession session){
-        long authorID = (long) session.getAttribute("userId");
-        forumPost.setAuthorID(authorID);
+    public String createPost(ForumPost forumPost){
         forumPostDB.save(forumPost);
         return "redirect:/home";
     }
 
     //View Post
     @GetMapping("/post/{postID}")
-    public String postDetail(@PathVariable("postID") long id, Model model, HttpSession session){
+    public String postDetail(@PathVariable("postID") long id, Model model){
         // Optional<ForumPost> post = forumPostDB.findById(id);
         // List<Comment> comments = commentDB.findByPostID(id);
         // model.addAttribute("Comments", comments);
         // post.ifPresent(value -> model.addAttribute("post", value));
         // return "forum";
-        model.addAttribute("forumPostFormController", this);
         Optional<ForumPost> postOptional = forumPostDB.findById(id);
 
         if (postOptional.isPresent()) {
@@ -117,11 +101,7 @@ public class ForumPostFormController {
             model.addAttribute("Comments", comments);
             model.addAttribute("post", post);
         }
-
-        long userID = (long) session.getAttribute("userId");
-        model.addAttribute("userID", userID);
-
-        return "forum";
+            return "forum";
     }
 
     //Delete comments
@@ -143,11 +123,9 @@ public class ForumPostFormController {
     }
 
     @PostMapping("/edit-comment/{commentID}")
-    public String editComment(@PathVariable("commentID") long id, @ModelAttribute Comment updatedComment, HttpSession session){
+    public String editComment(@PathVariable("commentID") long id, @ModelAttribute Comment updatedComment){
         Comment comment = commentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Comment " + id + " not found."));
         comment.setContent(updatedComment.getContent());
-        long authorID = (long) session.getAttribute("userId");
-        comment.setAuthorID(authorID);
         commentDB.save(comment);
         return "redirect:/post/" + comment.getPostID();    
     }
@@ -170,17 +148,33 @@ public class ForumPostFormController {
     }
     
     @PostMapping("/create-comment/{postID}")
-    public String createComment(@PathVariable("postID") long postID, @ModelAttribute Comment comment, HttpSession session) {
+    public String createComment(@PathVariable("postID") long postID, @ModelAttribute Comment comment) {
         comment.setPostID(postID);
-        long authorID = (long) session.getAttribute("userId");
-        comment.setAuthorID(authorID);
         commentDB.save(comment);
         return "redirect:/post/" + postID;
     }
 
-    public String getAuthorUsername(long authorID) {
-        return accountDB.findById(authorID)
-                .map(Account::getUsername)
-                .orElse("Unknown");
+     @GetMapping("/addFavorite/{postId}")
+    public String addFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.addFavoritePost(username, postId);
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/favorites")
+    public String viewFavorites(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        model.addAttribute("favoritePosts", accountManagementService.getFavoritePosts(username));
+
+        return "favorites";
+    }
+
+    @GetMapping("/removeFavorite/{postId}")
+    public String removeFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.removeFavoritePost(username, postId);
+
+        return "redirect:/favorites";
     }
 }
