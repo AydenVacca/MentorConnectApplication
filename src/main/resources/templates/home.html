@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Home</title>
     <!-- Add jQuery library (you can download it or use a CDN) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
@@ -20,142 +20,97 @@
     </script>
 </head>
 <body>
-    <!-- Navigation or Header Area -->
-<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f5f5f5;">
-    <h1 style="margin: 0;">Welcome to Mentor Connect</h1>
-    <div>
-        <a th:href="@{/home}">Home</a>
-        <a th:href="@{/favorites}">My Favorites</a>
-        <!-- Add more navigation links as needed -->
-    </div>
-</div>
-    <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Home</h1>
+    <div style="text-align: center; padding: 20px; background-color: #f0f0f0;">
+        <h1 style="font-weight: bold; font-size: 40pt;">Home</h1>
+        <hr style="border: 2px solid #333;">
+        
+        <!-- Account Stuff -->
+        <div id="initialRole" th:text="${role}"></div>
+        <div id="role"></div>
+        
+        <!-- Mentor Content -->
+        <div th:if="${role == 'Mentor'}" style="margin-top: 20px;">
+            <h1 style="font-weight: bold; font-size: 40pt;">Availability</h1>
+            <a th:href="@{/mentorAvailability}">
+                <button type="button">Add/Remove Availability</button>
+            </a>
+            
+            <h2>Mentor Availability</h2>
+            <ul th:each="availability: ${mentorAvailability}">
+                <li th:text="${availability.mentorName + ' - ' + availability.availability}"></li>
+            </ul>
+            
+            <p>This is content for mentors.</p>
+        </div>
+        
+        <!-- Mentee Content -->
+        <div th:if="${role == 'Mentee'}" style="margin-top: 20px;">
+            <h1 style="font-weight: bold; font-size: 40pt;">Mentor List</h1>
+            <p>This is content for mentees.</p>
+            
+            <h2>Mentor Availability</h2>
+            <ul>
+                <li th:each="mentorAvailability : ${mentorAvailability}">
+                    <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
+                    
+                    <ul>
+                        <li th:each="rating : ${mentorRatings}">
+                            <span th:text="${rating['mentorName'] + ': ' + rating['averageRating']}"></span>
+                        </li>
+                    </ul>
+                    
+                    <!-- Rate Button -->
+                    <a th:href="@{/rateMentor(mentorName=${mentorAvailability.mentorName})}">
+                        <button type="button">Rate</button>
+                    </a>
+                    <!-- Existing Create Appointment Button -->
+                    <a th:href="@{/appointmentCreation}">
+                        <button type="button">Create Appointment</button>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Forum Postings -->
+        <div style="margin-top: 20px; text-align: center;">
+            <h2 style="font-weight: bold; font-size: 30pt;">Posts</h2>
+            <a th:href="@{/createPost}">
+                <button>Create new Forum Post</button>
+            </a>
+            
+            <table style="margin-top: 10px; font-size: 20pt; width: 80%; margin: auto;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="post: ${ForumPost}">
+                        <td th:text="${post.postID}">post_id</td>
+                        <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
+                        <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
+                        <td>
+                            <div th:if="${post.authorID == userID}">
+                                <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
+                                    <button style="background-color: lightgreen">Edit</button>
+                                </a>
+                                <a th:href="@{/deletePost/{postID}(postID=${post.postID})}">
+                                    <button style="background-color: lightcoral">Delete</button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Account Stuff -->
-
-    <div id="initialRole" th:text="${role}">
-        <!-- The initial role will be rendered by Thymeleaf -->
-    </div>
-
-    <div id="role">
-        <!-- The role will be updated by JavaScript -->
-    </div>
-
-    <hr>
-    
-    <!-- Rest of your HTML content -->
-
-    <hr>
-    
-    <div th:if="${role == 'Mentor'}">
-        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Availability</h1>
-        <form th:action="@{/addAvailability}" method="post">
-            <label for="day">Choose a day:</label>
-            <select id="day" name="day" required>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <!-- Add more options for other days -->
-            </select>
-            <br>
-            <label for="time">Choose a time:</label>
-            <select id="time" name="time" required>
-                <option value="Morning">Morning</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Evening">Evening</option>
-                <!-- Add more options for other times -->
-            </select>
-            <br>
-            <button type="submit">Add Availability</button>
-        </form>
-    
-        <h2>Mentor Availability</h2>
-        <ul th:each="availability: ${mentorAvailability}">
-            <li th:text="${availability.mentorName + ' - ' + availability.availability}"></li>
-        </ul>
-    
-        <p>This is content for mentors.</p>
-    </div>
-    
-    
-    
-    
-    <div th:if="${role == 'Mentee'}">
-        <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Mentor List</h1>
-        <p>This is content for mentees.</p>
-    
-        <h2>Mentor Availability</h2>
-        <ul>
-            <li th:each="mentorAvailability: ${mentorAvailability}">
-                <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
-                <form th:action="@{/requestMentor}" method="post">
-                    <input type="hidden" name="mentorName" th:value="${mentorAvailability.mentorName}">
-                </form>
-                <a th:href="@{/rateMentor(mentorName=${mentorAvailability.mentorName})}">
-                    <button type="button">Rate</button>
-                </a>
-                <!-- Add a button to navigate to appointmentCreation.html -->
-                <a th:href="@{/appointmentCreation}">
-                    <button>Create Appointment</button>
-                </a>
-            </li>
-        </ul>
-        <a th:href="@{/mentorRatings}">
-            <button type="button">View Mentor Ratings</button>
+        <!-- Logout button -->
+        <a th:href="@{/}">
+            <button style="margin-top: 20px;">Logout</button>
         </a>
     </div>
-    
-    
-    
-    
-    <hr>
-    <!-- Forum Postings -->
-<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-    <h2 style="text-align: center; font-weight: bolder; font-size: 30pt;">Posts</h2>
-    <a th:href="@{/createPost}">
-        <button>Create new Forum Post</button>
-    </a>
-    <br>
-    <table style="font-size: 20pt;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="post: ${ForumPost}">
-                <td th:text="${post.postID}">post_id</td>
-                <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
-                <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
-                <td>
-                    <div>
-                        <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
-                            <button style="background-color: lightgreen">Edit</button>
-                        </a>
-                        <a th:href="@{/deletePost/{postID}(postID=${post.postID})}">
-                            <button style="background-color: lightcoral">Delete</button>
-                        </a>
-                        <!-- Add to Favorites Button -->
-                        <a th:href="@{/addFavorite/{postId}(postId=${post.postID})}">
-                            <button>Add to Favorites</button>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-
-    <hr>
-
-    <!-- Logout button -->
-    <a th:href="@{/}">
-        <button>Logout</button>
-    </a>
-    
 </body>
 </html>

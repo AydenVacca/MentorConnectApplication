@@ -1,8 +1,10 @@
 package com.webapp.mentorconnect2.models;
 
-import jakarta.persistence.*;
-import java.util.List;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,14 +39,6 @@ public class Account {
     
     // New field for storing the user's role
 
-    @ManyToMany
-    @JoinTable(
-        name = "favorite_posts",
-        joinColumns = @JoinColumn(name = "account_id"),
-        inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    @Getter @Setter
-    private List<ForumPost> favoritePosts;
     // Default constructor for display purposes
     public Account() {
 
