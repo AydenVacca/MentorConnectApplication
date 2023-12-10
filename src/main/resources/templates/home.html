@@ -77,15 +77,21 @@
     
         <h2>Mentor Availability</h2>
         <ul>
-            <li th:each="mentorAvailability: ${mentorAvailability}">
+            <li th:each="mentorAvailability : ${mentorAvailability}">
                 <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
-                <form th:action="@{/requestMentor}" method="post">
-                    <input type="hidden" name="mentorName" th:value="${mentorAvailability.mentorName}">
-                </form>
                 
-                <!-- Add a button to navigate to appointmentCreation.html -->
+    <ul>
+        <li th:each="rating : ${mentorRatings}">
+            <span th:text="${rating['mentorName'] + ': ' + rating['averageRating']}"></span>
+        </li>
+    </ul>
+                <!-- Rate Button -->
+                <a th:href="@{/rateMentor(mentorName=${mentorAvailability.mentorName})}">
+                    <button type="button">Rate</button>
+                </a>
+                <!-- Existing Create Appointment Button -->
                 <a th:href="@{/appointmentCreation}">
-                    <button>Create Appointment</button>
+                    <button type="button">Create Appointment</button>
                 </a>
             </li>
         </ul>
