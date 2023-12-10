@@ -5,9 +5,26 @@
     <title>Appointment Creation</title>
 </head>
 <body>
-    <h1>Create Appointment</h1>
-    <!-- Your appointment creation form goes here -->
+    <h1>MentorConnect</h1>
+    <hr />
+    <h2>Appointment Creation Form</h2>
+    <form action="/create-appointment" method="appointment"></form>
+        <label>Mentor UserName:</label>
+        <input type="mentorID" id="mentorID" name="mentorID" required>
+        <br>
+        <br>
 
+        <label>Date: </label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <br>
+        <label>Time: </label>
+        <input type="time" id="time" name="time" required>
+
+    </form>
+    
+    <br>
+    <br>
     <a th:href="@{/home}">
         <button>Return to Home</button>
     </a>
