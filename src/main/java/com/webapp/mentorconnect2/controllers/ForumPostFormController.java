@@ -13,14 +13,20 @@ import org.springframework.ui.Model;
 
 import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
+import com.webapp.mentorconnect2.repository.AccountManagementService;
 import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ForumPostFormController {
     
     @Autowired
     private ForumPostService forumPostDB;
+
+    @Autowired
+    private AccountManagementService accountManagementService;
 
     @Autowired
     public void setForumRepository(ForumPostService forumPostDB){
@@ -146,5 +152,29 @@ public class ForumPostFormController {
         comment.setPostID(postID);
         commentDB.save(comment);
         return "redirect:/post/" + postID;
+    }
+
+     @GetMapping("/addFavorite/{postId}")
+    public String addFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.addFavoritePost(username, postId);
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/favorites")
+    public String viewFavorites(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        model.addAttribute("favoritePosts", accountManagementService.getFavoritePosts(username));
+
+        return "favorites";
+    }
+
+    @GetMapping("/removeFavorite/{postId}")
+    public String removeFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.removeFavoritePost(username, postId);
+
+        return "redirect:/favorites";
     }
 }

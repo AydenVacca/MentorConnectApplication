@@ -20,6 +20,15 @@
     </script>
 </head>
 <body>
+    <!-- Navigation or Header Area -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f5f5f5;">
+    <h1 style="margin: 0;">Welcome to Mentor Connect</h1>
+    <div>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/favorites}">My Favorites</a>
+        <!-- Add more navigation links as needed -->
+    </div>
+</div>
     <h1 style="display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 40pt;">Home</h1>
 
     <!-- Account Stuff -->
@@ -77,21 +86,15 @@
     
         <h2>Mentor Availability</h2>
         <ul>
-            <li th:each="mentorAvailability : ${mentorAvailability}">
+            <li th:each="mentorAvailability: ${mentorAvailability}">
                 <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
+                <form th:action="@{/requestMentor}" method="post">
+                    <input type="hidden" name="mentorName" th:value="${mentorAvailability.mentorName}">
+                </form>
                 
-    <ul>
-        <li th:each="rating : ${mentorRatings}">
-            <span th:text="${rating['mentorName'] + ': ' + rating['averageRating']}"></span>
-        </li>
-    </ul>
-                <!-- Rate Button -->
-                <a th:href="@{/rateMentor(mentorName=${mentorAvailability.mentorName})}">
-                    <button type="button">Rate</button>
-                </a>
-                <!-- Existing Create Appointment Button -->
+                <!-- Add a button to navigate to appointmentCreation.html -->
                 <a th:href="@{/appointmentCreation}">
-                    <button type="button">Create Appointment</button>
+                    <button>Create Appointment</button>
                 </a>
             </li>
         </ul>
@@ -105,40 +108,45 @@
     
     <hr>
     <!-- Forum Postings -->
-    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
-        <h2 style="text-align: center; font-weight: bolder; font-size: 30pt;">Posts</h2>
-        <a th:href="@{/createPost}">
-            <button>Create new Forum Post</button>
-        </a>
-        <br>
-        <table style="font-size: 20pt;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="post: ${ForumPost}">
-                    <td th:text="${post.postID}">post_id</td>
-                    <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
-                    <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
-                    <td>
-                        <div>
-                            <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
-                                <button style="background-color: lightgreen">Edit</button>
-                            </a>
-                            <a th:href="@{/deletePost/{postID}(postID=${post.postID})}">
-                                <button style="background-color: lightcoral">Delete</button>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+    <h2 style="text-align: center; font-weight: bolder; font-size: 30pt;">Posts</h2>
+    <a th:href="@{/createPost}">
+        <button>Create new Forum Post</button>
+    </a>
+    <br>
+    <table style="font-size: 20pt;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post: ${ForumPost}">
+                <td th:text="${post.postID}">post_id</td>
+                <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
+                <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
+                <td>
+                    <div>
+                        <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
+                            <button style="background-color: lightgreen">Edit</button>
+                        </a>
+                        <a th:href="@{/deletePost/{postID}(postID=${post.postID})}">
+                            <button style="background-color: lightcoral">Delete</button>
+                        </a>
+                        <!-- Add to Favorites Button -->
+                        <a th:href="@{/addFavorite/{postId}(postId=${post.postID})}">
+                            <button>Add to Favorites</button>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
     <hr>
 
