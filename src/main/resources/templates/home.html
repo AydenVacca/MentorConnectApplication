@@ -93,7 +93,7 @@
                         <td><a th:href="@{/post/{postID}(postID=${post.postID})}" th:text="${post.title}"></a></td>
                         <td th:text="${post.authorID != 0 ? homeFormController.getAuthorUsername(post.authorID) : 'Unknown'}">post_author</td>
                         <td>
-                            <div>
+                            <div th:if="${post.authorID == userID}">
                                 <a th:href="@{/editPost/{postID}(postID=${post.postID})}">
                                     <button style="background-color: lightgreen">Edit</button>
                                 </a>
