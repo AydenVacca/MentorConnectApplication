@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 
 import com.webapp.mentorconnect2.models.Appointment;
@@ -19,7 +21,7 @@ import com.webapp.mentorconnect2.repository.AccountService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-public class AppointmentFormController{
+public class AppointmentController {
     @Autowired
     private final AppointmentService appointmentDB;
 
@@ -28,35 +30,41 @@ public class AppointmentFormController{
         this.appointmentDB = appointmentDB;
     }
     @GetMapping("/Appointment")
-    public String AppointmentPage(){
-        model.addAttribute("appointment" new Appointment());
+    public String appointmentPage(){
+        model.addAttribute("appointment", new Appointment());
         return "Appointment";
     }   
     //Create Appointment
     @PostMapping("/Appointment")
     public String addAppointment(HttpSession session,
-                        @RequestParam("mentorID") String mentorID,
-                        @RequestParam("menteeID")String menteeID,
+                        @RequestParam("mentorID") long mentorID,
+                        @RequestParam("menteeID")long menteeID,
                         @RequestParam("confirmed") boolean confirmed,
                         @RequestParam("day") String day,
                         @RequestParam("time") String time,
                         RedirectAttributes redirectAttributes) {
+
     String username = (String) session.getAttribute("username");
+
     //Instantiate appointment
     Appointment appointment = new Appointment();
     //Set attributes for appointment
     appointment.setMentorID(mentorID); 
     appointment.setMenteeID(menteeID);
     appointment.setConfirmed(confirmed);
-    appointment.setDateAndTime(day + " " + time);
+    appointment.setDate(day + " " + time);
+
     // Save the appointment
-    mentorAvailabilityRepository.save(appointment);
+    appointmentDB.save(appointment);
     redirectAttributes.addFlashAttribute("refresh", true);
+
     return "redirect:/Appointment";
 }
+
  
     @GetMapping("/ConfirmAppointment"){
-
+        return "ConfirmAppointment";
+        
     }
 
 
@@ -103,5 +111,8 @@ public class AppointmentFormController{
             
             appointmentDB.delete(appointment);
             return "redirect:/home";
+        }
+        public AppointmentService getAppointmentDB() {
+            return appointmentDB;
         }
 }
