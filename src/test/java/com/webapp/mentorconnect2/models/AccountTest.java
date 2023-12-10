@@ -18,7 +18,7 @@ public class AccountTest {
 
     @Test
     void testConstructor(){
-        acc = new Account("Willy", "Wonka");
+        acc = new Account("Willy", "Wonka", "Mentor");
         assertNotNull(acc);
         assertEquals("Willy", acc.getUsername());
         assertEquals("Wonka", acc.getPassword());

@@ -33,7 +33,9 @@ public class Account {
 
     @Getter
     @Setter
-    private String role;  // New field for storing the user's role
+    private String role;
+    
+    // New field for storing the user's role
 
     @ManyToMany
     @JoinTable(
