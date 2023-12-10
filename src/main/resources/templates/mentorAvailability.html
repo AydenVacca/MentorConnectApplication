@@ -1,0 +1,53 @@
+<!-- mentorAvailability.html -->
+<h1>Welcome to the Mentor Availability Page</h1>
+
+<div th:if="${param.refresh != null and param.refresh == 'true'}">
+    <!-- Your refresh logic here -->
+    <p>Content has been refreshed!</p>
+</div>
+
+<ul th:each="mentorAvailability: ${mentorAvailability}">
+    <li th:if="${mentorAvailability.mentorName == session.username}">
+        <span th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></span>
+        <form th:action="@{/removeAvailability}" method="post">
+            <input type="hidden" name="availabilityId" th:value="${mentorAvailability.id}" />
+            <button type="submit">Remove Availability</button>
+        </form>
+    </li>
+</ul>
+
+<!-- Add the form for adding availability -->
+<form th:action="@{/addAvailability}" method="post">
+    <label for="day">Choose a day:</label>
+    <select id="day" name="day" required>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+    </select>
+    <br>
+    <label for="time">Choose a time:</label>
+    <select id="time" name="time" required>=
+        <option value="08:00 am - 9:00 am">08:00 am - 9:00 am</option>
+        <option value="09:00 am - 10:00 am">09:00 am - 10:00 am</option>
+        <option value="10:00 am - 11:00 am">10:00 am - 11:00 am</option>
+        <option value="11:00 am - 12:00 pm">11:00 am - 12:00 pm</option>
+        <option value="12:00 pm - 1:00 pm">12:00 pm - 1:00 pm</option>
+        <option value="1:00 pm - 2:00 pm">1:00 pm - 2:00 pm</option>
+        <option value="2:00 pm - 3:00 pm">2:00 pm - 3:00 pm</option>
+        <option value="3:00 pm - 4:00 pm">3:00 pm - 4:00 pm</option>
+        <option value="4:00 pm - 5:00 pm">4:00 pm - 5:00 pm</option>
+        <option value="5:00 pm - 6:00 pm">5:00 pm - 6:00 pm</option>
+        <option value="6:00 pm - 7:00 pm">6:00 pm - 7:00 pm</option>
+        <option value="7:00 pm - 8:00 pm">7:00 pm - 8:00 pm</option>
+        <option value="8:00 pm - 9:00 pm">8:00 pm - 9:00 pm</option>
+        <option value="9:00 pm - 10:00 pm">9:00 pm - 10:00 pm</option>
+    </select>
+    <br>
+    <button type="submit">Add Availability</button>
+</form>
+
+<a th:href="@{/home}">
+    <button>Back</button>
+</a>
