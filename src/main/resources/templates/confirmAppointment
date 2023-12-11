@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointments</title>
+</head>
+<body>
+    <h1>MentorConnect</h1>
+    <hr />
+    <h2>Would you like to confirm this appointment?</h2>
+    <br>
+    <br>
+    <a th:href="@{/appointment}">
+        <button>Yes</button>
+    </a>
+    <a th:href="@{/home}">
+        <button>No</button>
+    </a>
+    <br>
+    <br>
+    <a th:href="@{/home}">
+        <button>Return to Home</button>
+    </a>
+</body>
+</html>
