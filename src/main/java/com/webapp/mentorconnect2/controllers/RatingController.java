@@ -72,5 +72,9 @@ public String mentorRatings(Model model) {
     return "mentorRatings";
 }
     // Additional methods can be implemented to view ratings, etc.
+
+public String mentorRatings(ch.qos.logback.core.model.Model model) {
+    return null;
+}
 }
 
