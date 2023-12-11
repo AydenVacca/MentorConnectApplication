@@ -24,7 +24,12 @@
 </head>
 <body>
     <h1>Create a MentorConnect Account</h1>
-    
+    <div th:if="${session.error}">
+        <p th:text="${session.error}" style="color: red;"></p>
+    </div>
+    <div th:if="${emailError}" style="color: red;">
+        <p th:text="${emailError}"></p>
+    </div>
     <form action="/signup" method="post" th:object="${user}">
         <!-- Your form fields and buttons -->
 

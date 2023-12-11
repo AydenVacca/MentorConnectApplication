@@ -29,18 +29,24 @@ public class SignUpFormController {
 
     @PostMapping("/signup")
     public String signup(@ModelAttribute("user") Account user, HttpSession session) {
-        // Perform server-side validation for email
+        // Validate password length
+        if (user.getPassword().length() < 5) {
+            session.setAttribute("error", "Password length must be 5 or more characters.");
+            return "redirect:/signup?error=password";
+        }
+        session.removeAttribute("error");
+        // Validate email (you can add more sophisticated email validation)
         if (!isValidEmail(user.getEmail())) {
-            // Handle invalid email (you can add an error message or redirect to the signup page)
+            session.setAttribute("error", "Must be ilstu email.");
             return "redirect:/signup?error=email";
         }
 
+        // Save the user if validations pass
         accountService.save(user);
 
         // Store the username and role in the session
         session.setAttribute("username", user.getUsername());
         session.setAttribute("role", user.getRole());
-        session.setAttribute("userId", user.getUserId());
 
         return "redirect:/login";
     }
