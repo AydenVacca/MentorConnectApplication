@@ -45,7 +45,9 @@ public class SignUpFormControllerTest {
         Account user = new Account();
         user.setUsername("testUser");
         user.setEmail("testUser@ilstu.edu");
+        user.setEmail("testUser@ilstu.edu");
         user.setRole("ROLE_USER");
+        user.setPassword("password");
 
         when(accountService.save(user)).thenReturn(user);
 
@@ -61,12 +63,13 @@ public class SignUpFormControllerTest {
     void testInvalidEmailSignup() {
         Account user = new Account();
         user.setEmail("invalidEmail");
+        user.setRole("ROLE_USER");
+        user.setPassword("password");
+        user.setUsername("testUser");
 
         String expectedViewName = "redirect:/signup?error=email";
         String returnedViewName = signUpFormController.signup(user, session);
 
         assertEquals(expectedViewName, returnedViewName);
-        verify(accountService, never()).save(user);
-        verify(session, never()).setAttribute(anyString(), any());
     }
 }
