@@ -49,4 +49,8 @@ public class Account {
         this.password = password;
         this.role = role;
     }
+
+    public void deleteFavoritePost(ForumPost post){
+        favoritePosts.remove(post);
+    }
 }

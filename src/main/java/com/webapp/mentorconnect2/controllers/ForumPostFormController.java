@@ -15,6 +15,7 @@ import com.webapp.mentorconnect2.models.Account;
 import com.webapp.mentorconnect2.models.Comment;
 import com.webapp.mentorconnect2.models.ForumPost;
 import com.webapp.mentorconnect2.repository.AccountService;
+import com.webapp.mentorconnect2.repository.AccountManagementService;
 import com.webapp.mentorconnect2.repository.CommentService;
 import com.webapp.mentorconnect2.repository.ForumPostService;
 
@@ -35,6 +36,9 @@ public class ForumPostFormController {
     }
 
     @Autowired
+    private AccountManagementService accountManagementService;
+
+    @Autowired
     public void setForumRepository(ForumPostService forumPostDB){
         this.forumPostDB = forumPostDB;
     }
@@ -51,7 +55,8 @@ public class ForumPostFormController {
     @GetMapping("/deletePost/{postID}")
     public String deleteForumPost(@PathVariable("postID") long id, Model model){
         ForumPost post = forumPostDB.findById(id).orElseThrow(()-> new IllegalArgumentException("Post " + id + " not found."));
-        
+        Account account = accountDB.findById(post.getAuthorID()).orElseThrow(()-> new IllegalArgumentException("Account not found."));
+        account.deleteFavoritePost(post);
         forumPostDB.delete(post);
         return "redirect:/home";
     }
@@ -176,6 +181,30 @@ public class ForumPostFormController {
         comment.setAuthorID(authorID);
         commentDB.save(comment);
         return "redirect:/post/" + postID;
+    }
+
+     @GetMapping("/addFavorite/{postId}")
+    public String addFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.addFavoritePost(username, postId);
+
+        return "redirect:/home";
+    }
+
+    @GetMapping("/favorites")
+    public String viewFavorites(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        model.addAttribute("favoritePosts", accountManagementService.getFavoritePosts(username));
+
+        return "favorites";
+    }
+
+    @GetMapping("/removeFavorite/{postId}")
+    public String removeFavorite(@PathVariable Long postId, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        accountManagementService.removeFavoritePost(username, postId);
+
+        return "redirect:/favorites";
     }
 
     public String getAuthorUsername(long authorID) {
