@@ -90,17 +90,21 @@ public class AppointmentController {
         Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
 
         model.addAttribute("appointment", appointment);
-        return "editAppointment";
+        return "redirect:/home";
     }
 
     //Update the page
     @PostMapping("/edit-appointment/{appointmentID}")
     public String editAppointment(@PathVariable("appointmentID") long id, @ModelAttribute Appointment updatedAppointment, HttpSession session){
         Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
-        appointment.setContent(updatedAppointment.getContent());
+        appointment.setMentorID(updatedAppointment.getMentorID());
+        appointment.setDate(updatedAppointment.getDate());
+        appointment.setTime(updatedAppointment.getTime());
+
         long authorID = (long) session.getAttribute("userId");
         appointment.setAppointmentID(id);
         appointmentDB.save(appointment);
+
         return "redirect:/appointment/" + appointment.getAppointmentID();    
     }
 
@@ -112,7 +116,5 @@ public class AppointmentController {
             appointmentDB.deleteById(id);
             return "redirect:/home";
         }
-        public AppointmentService getAppointmentDB() {
-            return appointmentDB;
-        }
+   
 }
