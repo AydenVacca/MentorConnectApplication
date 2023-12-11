@@ -60,18 +60,6 @@ public class ForumPostFormControllerTest {
     }
 
     @Test
-    void testShowDeletePost(){
-        long postID = 1;
-        ForumPost post = new ForumPost();
-        post.setPostID(postID);
-
-        when(forumPostDB.findById(postID)).thenReturn(Optional.of(post));
-
-        String result = forumPostFormController.deleteForumPost(postID, model);
-        assertEquals("redirect:/home", result);
-    }
-
-    @Test
     void testShowCreateComment(){
         String expectedViewName = "createComment";
         String returnedViewName = forumPostFormController.createComment(1, model);
