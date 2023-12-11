@@ -33,7 +33,7 @@ public class HomeFormController {
     public ModelAndView homePage(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("home");
 
-        // Pull all items from db and add to the list object
+        // Pull all items from database and add to the list object
         modelAndView.addObject("Accounts", accountDB.findAll());
         modelAndView.addObject("ForumPost", forumPostDB.findAll());
         modelAndView.addObject("homeFormController", this);
