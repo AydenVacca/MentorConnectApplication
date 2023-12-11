@@ -5,14 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Account")
+@Table(name = "Appointment")  // Correct table name
 public class Appointment {
-    
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Getter
@@ -35,20 +34,14 @@ public class Appointment {
     @Setter
     private boolean confirmed;
 
-    //Default Constructor
-    public Appointment(){
-
+    // Default Constructor
+    public Appointment() {
     }
 
-    public Appointment(long appointmentID, long menteeID, long mentorID, String date, boolean confirmed){
-        this.appointmentID = appointmentID;
+    public Appointment(long menteeID, long mentorID, String date, boolean confirmed) {
         this.menteeID = menteeID;
         this.mentorID = mentorID;
         this.date = date;
         this.confirmed = confirmed;
-    }
-
-    public Object getContent() {
-        return null;
     }
 }

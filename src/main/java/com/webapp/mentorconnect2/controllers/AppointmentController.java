@@ -21,53 +21,49 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AppointmentController {
-    @Autowired
-    private  AppointmentService appointmentDB;
 
     @Autowired
-    public void setAppointmentRepository(AppointmentService appointmentDB){
-        this.appointmentDB = appointmentDB;
-    }
+    private AppointmentService appointmentDB;
+
     @GetMapping("/Appointment")
-    public String appointmentPage(Model model){
+    public String appointmentPage(Model model) {
         model.addAttribute("appointment", new Appointment());
         return "Appointment";
-    }   
-    //Create Appointment
-    @PostMapping("/Appointment")
-    public String addAppointment(HttpSession session,
-                        @RequestParam("mentorID") long mentorID,
-                        @RequestParam("menteeID")long menteeID,
-                        @RequestParam("confirmed") boolean confirmed,
-                        @RequestParam("day") String day,
-                        @RequestParam("time") String time,
-                        RedirectAttributes redirectAttributes) {
-
-    String username = (String) session.getAttribute("username");
-
-    //Instantiate appointment
-    Appointment appointment = new Appointment();
-    //Set attributes for appointment
-    appointment.setMentorID(mentorID); 
-    appointment.setMenteeID(menteeID);
-    appointment.setConfirmed(confirmed);
-    appointment.setDate(day + " " + time);
-
-    // Save the appointment
-    appointmentDB.save(appointment);
-    redirectAttributes.addFlashAttribute("refresh", true);
-
-    return "redirect:/Appointment";
-}
-
- 
-    @GetMapping("/ConfirmAppointment")
-    public String confirmAppointmentPage(){
-        return "ConfirmAppointment";
-        
     }
 
+    // Create Appointment
+    @PostMapping("/Appointment")
+    public String addAppointment(HttpSession session,
+                                 @RequestParam("mentorID") long mentorID,
+                                 @RequestParam("menteeID") long menteeID,
+                                 @RequestParam("confirmed") boolean confirmed,
+                                 @RequestParam("day") String day,
+                                 @RequestParam("time") String time,
+                                 RedirectAttributes redirectAttributes) {
 
+        // You can get the username directly from the session, no need to fetch it again
+        String username = (String) session.getAttribute("username");
+
+        // Instantiate appointment
+        Appointment appointment = new Appointment();
+        
+        // Set attributes for appointment
+        appointment.setMentorID(mentorID);
+        appointment.setMenteeID(menteeID);
+        appointment.setConfirmed(confirmed);
+        appointment.setDate(day + " " + time);
+
+        // Save the appointment
+        appointmentDB.save(appointment);
+        redirectAttributes.addFlashAttribute("refresh", true);
+
+        return "redirect:/Appointment";
+    }
+
+    @GetMapping("/ConfirmAppointment")
+    public String confirmAppointmentPage() {
+        return "ConfirmAppointment";
+    }
 
     @PostMapping("/ConfirmAppointment")
     public String confirmAppointment(HttpSession session, Model model) {
@@ -75,7 +71,7 @@ public class AppointmentController {
 
         // Check if the user is a Mentor, and have them confirm the appointment
         if (mentorName != null) {
-            List<Appointment> appointments = appointmentDB.findByMentorName(mentorName);
+            List<Appointment> appointments = appointmentDB.findByMentorID(mentorName);
             model.addAttribute("appointments", appointments);
             return "appointment";
         } else {
@@ -84,37 +80,38 @@ public class AppointmentController {
         }
     }
 
-    //Edit Appointment
+    // Edit Appointment
     @GetMapping("/editAppointment/{appointmentID}")
-    public String editAppointment(@PathVariable("appointmentID") long id, Model model){
-        Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
+    public String editAppointment(@PathVariable("appointmentID") long id, Model model) {
+        Appointment appointment = appointmentDB.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
 
         model.addAttribute("appointment", appointment);
-        return "redirect:/home";
+        return "editAppointment";
     }
 
-    //Update the page
+    // Update the page
     @PostMapping("/edit-appointment/{appointmentID}")
-    public String editAppointment(@PathVariable("appointmentID") long id, @ModelAttribute Appointment updatedAppointment, HttpSession session){
-        Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
+    public String editAppointment(@PathVariable("appointmentID") long id, @ModelAttribute Appointment updatedAppointment,
+                                  HttpSession session) {
+        Appointment appointment = appointmentDB.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
         appointment.setMentorID(updatedAppointment.getMentorID());
         appointment.setDate(updatedAppointment.getDate());
-        appointment.setTime(updatedAppointment.getTime());
+
+        // You can set other properties as needed
 
         long authorID = (long) session.getAttribute("userId");
         appointment.setAppointmentID(id);
         appointmentDB.save(appointment);
 
-        return "redirect:/appointment/" + appointment.getAppointmentID();    
+        return "redirect:/appointment/" + appointment.getAppointmentID();
     }
 
-    //Delete Appointment
-        @GetMapping("/deleteAppointment/{AppointmentID}")
-        public String deleteAppointment(@PathVariable("AppointmentID") long id){
-            Appointment appointment = appointmentDB.findById(id).orElseThrow(()-> new IllegalArgumentException("Appointment " + id + " not found."));
-            
-            appointmentDB.deleteById(id);
-            return "redirect:/home";
-        }
-   
+    // Delete Appointment
+    @GetMapping("/deleteAppointment/{appointmentID}")
+    public String deleteAppointment(@PathVariable("appointmentID") long id, Model model) {
+        appointmentDB.deleteById(id);
+        return "redirect:/home";
+    }
 }

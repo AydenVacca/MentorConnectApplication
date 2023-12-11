@@ -7,5 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AppointmentService extends CrudRepository<Appointment, Long>{
+
+    List<Appointment> findByMentorID(String mentorID);
     //Add query methods
 }
