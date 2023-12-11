@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Confirmation</title>
+</head>
+<body>
+    <h1>MentorConnect</h1>
+    <hr />
+    <br>
+    <br>
+    <form action="@{/home}" method="post">
+        <h2>Would you like to confirm your appointment?</h2>
+        <label for="yes">Yes</label>
+        <input type="radio" id="yes" name="agree" value="true" required>
+    
+        <label for="no">No</label>
+        <input type="radio" id="no" name="agree" value="false" required>
+    
+        <button type="submit">Submit</button>
+    </form>
+    <a th:href="@{/home}">
+        <button>Return to Home</button>
+    </a>
+</body>
+</html>
