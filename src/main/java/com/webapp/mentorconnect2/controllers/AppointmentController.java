@@ -29,7 +29,7 @@ public class AppointmentController {
         this.appointmentDB = appointmentDB;
     }
     @GetMapping("/Appointment")
-    public String appointmentPage(){
+    public String appointmentPage(Model model){
         model.addAttribute("appointment", new Appointment());
         return "Appointment";
     }   
