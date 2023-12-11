@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
-
 import com.webapp.mentorconnect2.models.Appointment;
 import com.webapp.mentorconnect2.repository.AppointmentService;
 import com.webapp.mentorconnect2.models.Account;
@@ -23,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class AppointmentController {
     @Autowired
-    private final AppointmentService appointmentDB;
+    private  AppointmentService appointmentDB;
 
     @Autowired
     public void setAppointmentRepository(AppointmentService appointmentDB){
@@ -62,7 +61,8 @@ public class AppointmentController {
 }
 
  
-    @GetMapping("/ConfirmAppointment"){
+    @GetMapping("/ConfirmAppointment")
+    public String confirmAppointmentPage(){
         return "ConfirmAppointment";
         
     }
@@ -70,13 +70,13 @@ public class AppointmentController {
 
 
     @PostMapping("/ConfirmAppointment")
-    public String createAppointmentPage(HttpSession session, Model model) {
+    public String confirmAppointment(HttpSession session, Model model) {
         String mentorName = (String) session.getAttribute("username");
 
         // Check if the user is a Mentor, and have them confirm the appointment
         if (mentorName != null) {
             List<Appointment> appointments = appointmentDB.findByMentorName(mentorName);
-            model.addAttribute("appointment", appointment);
+            model.addAttribute("appointments", appointments);
             return "appointment";
         } else {
             // Redirect to error page
@@ -86,7 +86,7 @@ public class AppointmentController {
 
     //Edit Appointment
     @GetMapping("/editAppointment/{appointmentID}")
-    public String editComment(@PathVariable("appointmentID") long id, Model model){
+    public String editAppointment(@PathVariable("appointmentID") long id, Model model){
         Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
 
         model.addAttribute("appointment", appointment);
@@ -99,17 +99,17 @@ public class AppointmentController {
         Appointment appointment = appointmentDB.findById(id).orElseThrow(() -> new IllegalArgumentException("Appointment " + id + " not found."));
         appointment.setContent(updatedAppointment.getContent());
         long authorID = (long) session.getAttribute("userId");
-        appointment.setAppointmentID(appointmentID);
+        appointment.setAppointmentID(id);
         appointmentDB.save(appointment);
         return "redirect:/appointment/" + appointment.getAppointmentID();    
     }
 
     //Delete Appointment
         @GetMapping("/deleteAppointment/{AppointmentID}")
-        public String deleteAppointment(@PathVariable("AppointmentID") long id, Model model){
+        public String deleteAppointment(@PathVariable("AppointmentID") long id){
             Appointment appointment = appointmentDB.findById(id).orElseThrow(()-> new IllegalArgumentException("Appointment " + id + " not found."));
             
-            appointmentDB.delete(appointment);
+            appointmentDB.deleteById(id);
             return "redirect:/home";
         }
         public AppointmentService getAppointmentDB() {
