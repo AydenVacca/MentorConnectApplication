@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h1>Create a MentorConnect Account</h1>
+    
+    <form action="/signup" method="post" th:object="${user}">
+
+        <label>Email:</label>
+        <input type="text" id="email" name="email" th:field="*{email}" required><br>
+
+        <label>Username:</label>
+        <input type="text" id="username" name="username" th:field="*{username}" required><br>
+
+        <label>Password:</label>
+        <input type="password" id="password" name="password" th:field="*{password}" required><br>
+
+        <label>Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" required><br>
+
+        <label>Role:</label>
+        <input type="radio" name="role" value="Mentor" checked> Mentor
+        <input type="radio" name="role" value="Mentee"> Mentee<br>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <a th:href="@{/login}">
+        <button>Log In</button>
+    </a>
+
+</body>
+</html>

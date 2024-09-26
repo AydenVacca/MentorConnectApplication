@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comment</title>
+</head>
+<body>
+    <h1>MentorConnect</h1>
+    <form th:action="@{/edit-comment/{commentID}(commentID=${comment.commentID})}" method="post" th:object="${comment}">
+        <label>Edit Comment:</label>
+        <input type="text" th:field="*{content}" required>
+        <br>
+        <br>
+        <hr>
+        <button type="submit">Save Changes</button>
+    </form>
+    <br>
+    <!-- Back -->
+    <a th:href="@{/post/{postID}(postID=${comment.postID})}">
+        <button>Back</button>
+    </a>
+</body>
+</html>

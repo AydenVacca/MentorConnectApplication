@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mentee Page</title>
+</head>
+<body>
+    <h1>Welcome to the Mentee Page</h1>
+
+    <h2>Mentor Availability</h2>
+    <ul th:each="mentorAvailability: ${mentorAvailability}">
+        <li th:text="${mentorAvailability.mentorName + ' - ' + mentorAvailability.availability}"></li>
+    </ul>
+
+    <a th:href="@{/home}">
+        <button>Back</button>
+    </a>
+    <!-- Add your additional content specific to the Mentee Page here -->
+
+</body>
+</html>
